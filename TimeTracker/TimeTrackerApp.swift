@@ -14,8 +14,8 @@ struct TimeTrackerApp: App {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            TagModel.self,
             WorkDay.self,
+            TagModel.self,
             TaskModel.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
