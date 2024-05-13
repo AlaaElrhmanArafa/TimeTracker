@@ -30,12 +30,6 @@ struct TimeTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .task { @MainActor in
-                    if !isMockTasksSaved {
-                        sampleTasks.forEach { sharedModelContainer.mainContext.insert($0) }
-                        isMockTasksSaved = true
-                    }
-                }
         }
         .modelContainer(sharedModelContainer)
     }
