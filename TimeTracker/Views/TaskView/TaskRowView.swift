@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TaskRowView: View {
-    let task: TaskModel
+    @Bindable var task: TaskModel
     @State var isTaskCurrenlyPlayed: Bool
     
     var body: some View {
@@ -36,10 +37,10 @@ struct TaskRowView: View {
                 .fill(Color(hex: task.tint))
                 .frame(width: 44, height: 44)
                 .background(.white.shadow(.drop(color: .black.opacity(0.1),radius: 3)), in: .circle)
-    
-                Image(systemName: task.image)
-                    .renderingMode(.template)
-                    .foregroundStyle(.white)
+            
+            Image(systemName: task.image)
+                .renderingMode(.template)
+                .foregroundStyle(.white)
         }
     }
     
@@ -77,25 +78,9 @@ struct TaskRowView: View {
 }
 
 #Preview {
-    TaskRowView(task: TaskModel.init(
-        taskTitle: "Record Video",
-        creationDate: .updateHour(-5),
-        isWorking: true,
-        tint: "#9B51E0",
-        tags: [
-            TagModel(
-                tagTitle: "Work",
-                tint: "#0000ff"
-            ),
-            TagModel(
-                tagTitle: "Personal",
-                tint: "#ee82ee"
-            )
-        ],
-        image: "clock"
-    ), isTaskCurrenlyPlayed: true)
-}
-
-#Preview {
-    TasksView()
+    ContainerPreview(models: TaskModel.self) { context in
+         let task = sampleTasks[0]
+         context.insert(task)
+         return TaskRowView(task: task, isTaskCurrenlyPlayed: true)
+    }
 }

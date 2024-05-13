@@ -10,25 +10,31 @@ import SwiftData
 import SwiftUI
 
 struct ContainerPreview<Content: View>: View {
+        
+    private var mockContainer: ModelContainer
+    private let content: (_ context: ModelContext) -> Content
     
-    @ViewBuilder let content: Content
-    var mockContainer: ModelContainer = {
-        let schema = Schema([
-            WorkDay.self,
-            TagModel.self,
-            TaskModel.self,
-        ])
+    init(models: any PersistentModel.Type..., content: @escaping (_ context: ModelContext) -> Content ) {
+        self.content = content
+        let schema = Schema(models)
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+             mockContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
+    }
+
+    private func saveItems(items: [any PersistentModel]) {
+        Task { @MainActor in
+            items.forEach { item in
+                mockContainer.mainContext.insert(item)
+            }
+        }
+    }
     
     var body: some View {
-        content
+        content(mockContainer.mainContext)
             .modelContainer(mockContainer)
     }
 }
