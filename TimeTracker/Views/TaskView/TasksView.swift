@@ -20,7 +20,7 @@ struct TasksView: View {
                 
                 ScrollView(.vertical) {
                     ForEach(tasks){ task in
-                        TaskRowView(task: task, isTaskCurrenlyPlayed: Bool.random())
+                        TaskRowView(task: task)
                             .frame(height: 84)
                     }
                 }
@@ -55,7 +55,14 @@ struct TasksView: View {
 }
 
 #Preview {
-    TasksView()
+    ContainerPreview(models: TaskModel.self) { context in
+        Task { @MainActor in
+            sampleTasks.forEach { task in
+                context.insert(task)
+            }
+        }
+        return TasksView()
+    }
 }
 
 

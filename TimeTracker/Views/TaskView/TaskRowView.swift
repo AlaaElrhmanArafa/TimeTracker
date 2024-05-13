@@ -10,10 +10,9 @@ import SwiftData
 
 struct TaskRowView: View {
     @Bindable var task: TaskModel
-    @State var isTaskCurrenlyPlayed: Bool
     
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .center, spacing: 10) {
             taskImageView()
             
             VStack(alignment: .leading) {
@@ -65,10 +64,10 @@ struct TaskRowView: View {
                 .font(.system(size: 12, weight: .regular))
             
             Button(action: {
-                isTaskCurrenlyPlayed.toggle()
+                task.isWorking.toggle()
             }, label: {
                 withAnimation(.easeInOut) {
-                    Image(systemName: isTaskCurrenlyPlayed ? "play.fill" : "pause.fill")
+                    Image(systemName: task.isWorking ? "play.fill" : "pause.fill")
                         .frame(width: 17, height: 17)
                 }
             })
@@ -81,6 +80,6 @@ struct TaskRowView: View {
     ContainerPreview(models: TaskModel.self) { context in
          let task = sampleTasks[0]
          context.insert(task)
-         return TaskRowView(task: task, isTaskCurrenlyPlayed: true)
+         return TaskRowView(task: task)
     }
 }
