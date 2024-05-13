@@ -24,7 +24,7 @@ class WorkDay {
 }
 
 @Model
-class TagModel: Identifiable {
+class TagModel {
     @Attribute(.unique) var id: UUID
     var tagTitle: String
     var tint: String
@@ -34,11 +34,12 @@ class TagModel: Identifiable {
         self.id = UUID()
         self.tagTitle = tagTitle
         self.tint = tint
+        self.tasks = []
     }
 }
 
 @Model
-class TaskModel: Identifiable {
+class TaskModel {
     @Attribute(.unique) var id: UUID
     var taskTitle: String
     var creationDate: Date = Date()
